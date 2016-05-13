@@ -21,7 +21,7 @@ let  common = {
     module: {
         loaders: [{
             test   : /\.jsx?$/,
-            loader: "babel?presets[]=react,presets[]=es2015,presets[]=stage-0",
+            loader: "babel?presets[]=es2015,presets[]=stage-0",
             exclude: /node_modules/
         }, {
             test  : /\.s[ac]ss$/,
