@@ -62,16 +62,14 @@ describe('mergeLists function', () => {
 })
 
 describe('quick sorting for singly-linked list', () => {
-    let compare_cont = 0;
-    let soft_cont = 0;
+    // let compare_cont = 0;
+    // let soft_cont = 0;
 
     function quickSortLink(head){
         //check if done
         if(!head || !head.next){
             return head;
         }
-
-        soft_cont ++ ;
         //set a base
         var base = head.val,
             left,
@@ -102,7 +100,7 @@ describe('quick sorting for singly-linked list', () => {
                 }
             }
             ptr = ptr.next;
-            compare_cont ++;
+            // compare_cont ++;
         }
         //recursively sort left and right
         //merge
@@ -110,7 +108,7 @@ describe('quick sorting for singly-linked list', () => {
     }
 
     it('should sort the list', () => {
-        compare_cont = 0;
+        // compare_cont = 0;
         var data = [10, 1, 3, 4, 1, 5, 2, 5, 5, 5];
         var head;
         data.forEach((d) => {
@@ -131,45 +129,79 @@ describe('quick sorting for singly-linked list', () => {
             ptr = ptr.next;
         }
         expect(result).to.deep.equal(data.sort((a, b) => {return a>b; }));
-        console.log(`compare ${compare_cont} times`);
-        console.log(`sort ${soft_cont} times`);
+        // console.log(`compare ${compare_cont} times`);
+        // console.log(`sort ${soft_cont} times`);
     });
 })
 
+function shiftNode(head){
+    var rest = head.next;
+    head.next = null;
+    return rest;
+}
 
-describe('quick sorting for singly-linked list, by swap', () => {
+describe('quick sorting for singly-linked list, without extra memory', () => {
     function quickSortLink(head){
+        //check if done
+        if(!head || !head.next){
+            return head;
+        }
+        //set a base
+        var left, right;
 
+        var mid = head;
+        var ptr = shiftNode(head);
+
+        //fill left list and right list
+        while(ptr){
+            var rest = shiftNode(ptr);
+            if(ptr.val < mid.val){
+                if(!left){
+                    left = ptr;
+                }
+                else{
+                    insertNode(left, ptr);
+                }
+            }
+            else if(ptr.val === mid.val){
+                insertNode(mid, ptr);
+            }
+            else {
+                if(!right){
+                    right = ptr;
+                }
+                else{
+                    insertNode(right, ptr);
+                }
+            }
+            ptr = rest;
+        }
+        //recursively sort left and right
+        //merge
+        return mergeLists(quickSortLink(left), mid, quickSortLink(right));
     }
 
 
-    describe('swap nodes', () => {
-        it('should swap two nodes', () => {
-
-        });
-    })
-
-
     it('should sort the list', () => {
-        // var data = [12, 3, 4, 2];
-        // var head;
-        // data.forEach((d) => {
-        //     if(!head)
-        //         head = new ListNode(d);
-        //     else {
-        //         insertNode(head, new ListNode(d));
-        //     }
-        // })
-        //
-        // var sortedLink = quickSortLink(head);
-        // var result = [];
-        // var ptr = sortedLink;
-        //
-        // while(ptr){
-        //
-        //     result.push(ptr.val);
-        //     ptr = ptr.next;
-        // }
-        //expect(result).to.deep.equal(data.sort((a, b) => {return a>b; }));
+        var data = [12, 3, 4, 2];
+        var head;
+        data.forEach((d) => {
+            if(!head)
+                head = new ListNode(d);
+            else {
+                insertNode(head, new ListNode(d));
+            }
+        })
+
+        var sortedLink = quickSortLink(head);
+        var result = [];
+        var ptr = sortedLink;
+
+        while(ptr){
+
+            result.push(ptr.val);
+            ptr = ptr.next;
+        }
+        expect(result).to.deep.equal(data.sort((a, b) => {return a>b; }));
     });
 })

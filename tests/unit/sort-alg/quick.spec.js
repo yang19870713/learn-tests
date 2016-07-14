@@ -25,7 +25,7 @@ describe('quick sorting', () => {
     it('should sort an input array', ()=> {
         let input = [1, 4, 2, 9, 20, 12, 3];
         expect(quickSort(input)).to.deep.equal(input.sort((a,b)=>{
-            return a > b;
+            return a - b;
         }));
     })
 
