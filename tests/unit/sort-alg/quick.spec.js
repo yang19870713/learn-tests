@@ -1,3 +1,4 @@
+import {runTest} from './test-helper';
 const expect = chai.expect;
 
 describe('quick sorting', () => {
@@ -77,8 +78,13 @@ describe('quick sorting --- swap', () => {
     }
 
     it('should sort an input array', ()=> {
-        let input = [1, 4, 2, 9, 20, 12, 3];
-        expect(quickSort(input)).to.deep.equal([1, 2, 3, 4, 9, 12, 20]);
+        let result = runTest(quickSort);
+
+        expect(result.output).to.deep.equal(result.expectOutput);
+        console.log(result.runtime);
+
+        let input = [];
+        expect(quickSort(input)).to.deep.equal([]);
     })
 
     it('should return [] when input is []', () => {

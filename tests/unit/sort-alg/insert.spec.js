@@ -1,8 +1,7 @@
-import {genData} from './test-helper';
+import {runTest} from './test-helper';
 const expect = chai.expect;
 
 function insertSort(array){
-    let start = new Date();
     let j, temp;
     for(let i = 1; i < array.length; i++){
         j = i;
@@ -13,18 +12,17 @@ function insertSort(array){
         }
         array[j] = temp
     }
-    console.log(`runtime of insert sort: ${new Date() -start}`)
     return array;
 }
 
 describe('insert sort', () => {
     it('should sort the array', () => {
-        let input = genData(1000);
+        let result = runTest(insertSort);
 
-        let expectOutput = input.slice().sort((a,b) => {
-            return a-b;
-        })
-        let output = insertSort(input);
-        expect(output).to.deep.equal(expectOutput);
+        expect(result.output).to.deep.equal(result.expectOutput);
+        console.log(result.runtime);
+
+        let input = [];
+        expect(insertSort(input)).to.deep.equal([]);
     })
 })

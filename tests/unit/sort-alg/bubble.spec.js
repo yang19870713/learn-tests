@@ -1,3 +1,4 @@
+import {runTest} from './test-helper';
 const expect = chai.expect;
 
 describe('bubble sorting', () => {
@@ -23,12 +24,12 @@ describe('bubble sorting', () => {
     }
 
     it('should sort an input array', ()=> {
-        let input = [1, 4, 2, 9, 20, 12, 3];
-        expect(bubbleSort(input)).to.deep.equal([1, 2, 3, 4, 9, 12, 20]);
-    })
+        let result = runTest(bubbleSort);
 
-    it('should run only once when the array is softed', () => {
-        let input = [1, 2, 3, 4, 5, 6, 7];
-        bubbleSort(input);
+        expect(result.output).to.deep.equal(result.expectOutput);
+        console.log(result.runtime);
+
+        let input = [];
+        expect(bubbleSort(input)).to.deep.equal([]);
     })
 })
