@@ -1,4 +1,4 @@
-import {genData} from './test-helper';
+import {runTest} from './test-helper';
 const expect = chai.expect;
 function swap(array, x, y){
     let temp = array[x];
@@ -24,13 +24,13 @@ function selectSort(array){
 
 describe('select sort', () => {
     it('should sort the array', () => {
-        let input = genData(100);
-        let expectOuput = input.slice().sort((a, b) => {
-            return a - b;
-        })
+        let result = runTest(selectSort);
 
-        let output = selectSort(input);
-        expect(input).to.deep.equal(expectOuput);
+        expect(result.output).to.deep.equal(result.expectOutput);
+        console.log(result.runtime);
+
+        let input = [];
+        expect(selectSort(input)).to.deep.equal([]);
 
     })
 
