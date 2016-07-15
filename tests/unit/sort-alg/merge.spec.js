@@ -1,7 +1,7 @@
 import {runTest} from './test-helper';
 const expect = chai.expect;
 
-function mergeSort(array, start=0, end=array.length-1){
+function topDownMergeSort(array, start=0, end=array.length-1){
     if(array.length === 0)
         return array;
 
@@ -10,35 +10,74 @@ function mergeSort(array, start=0, end=array.length-1){
 
     let mid = Math.floor((end - start + 1)/2) + start -1;
 
-    mergeSort(array, start, mid);
-    mergeSort(array, mid+1, end);
-    merge(array, start, mid, end);
+    topDownMergeSort(array, start, mid);
+    topDownMergeSort(array, mid+1, end);
+    merge(array, start, mid, mid + 1, end);
     return array;
 }
 
-function merge(array, start, mid, end){
-    //console.log(`merge array [${start} ${mid}] and [${mid+1} ${end}] `);
-    var temp = array.slice(0, mid + 1);
-    let i = start,
-        j = mid + 1,
-        k = start;
-    while(i <= mid && j <= end){
-        array[k++] = array[j] < temp[i]? array[j++] : temp[i++];
+
+function bottomUpMergeSort(array){
+    if(array.length < 2){
+        return array;
     }
-    while(i <= mid){
+
+    let step = 1,
+        left,
+        right;
+
+    while(step <= array.length){
+        left = 0;
+        right = step;
+
+        while(right + step <= array.length){
+            merge(array, left, left + step - 1, right, right + step - 1);
+            left = right + step;
+            right = left + step;
+        }
+        if(right < array.length){
+            merge(array, left, left + step - 1, right, array.length - 1);
+        }
+        step *= 2;
+    }
+
+    return array;
+}
+
+function merge(array, leftStart, leftEnd, rightStart, rightEnd){
+    let temp = array.slice(leftStart, leftEnd + 1);
+    let i = 0,
+        j = rightStart,
+        k = leftStart;
+    while(i<=leftEnd-leftStart && j<=rightEnd){
+        array[k++] = array[j] < temp[i] ? array[j++] : temp[i++];
+    }
+    while(i <= leftEnd-leftStart){
         array[k++] = temp[i++];
     }
 }
 
-describe('Merge sort', () => {
+describe('TopDown Merge sort', () => {
     it('should sort array', () => {
-        let result = runTest(mergeSort);
+        let result = runTest(topDownMergeSort);
 
         expect(result.output).to.deep.equal(result.expectOutput);
         console.log(result.runtime);
 
         let input = [];
-        expect(mergeSort(input)).to.deep.equal([]);
+        expect(topDownMergeSort(input)).to.deep.equal([]);
+    })
+
+})
+describe('Bottom Up Merge sort', () => {
+    it('should sort array', () => {
+        let result = runTest(bottomUpMergeSort, 10000);
+
+        expect(result.output).to.deep.equal(result.expectOutput);
+        console.log(result.runtime);
+
+        let input = [];
+        expect(bottomUpMergeSort(input)).to.deep.equal([]);
     })
 
 })
