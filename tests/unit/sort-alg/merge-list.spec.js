@@ -20,6 +20,13 @@ function appendList(head, node){
 }
 
 function mergeSortList(head){
+    if(!head || !head.next)
+        return head;
+
+
+}
+
+function mergeList(){
 
 }
 
@@ -41,7 +48,13 @@ function sort(input){
 
 describe('merge sort linked list', () => {
     it('should sort the list', () => {
-
+        // let result = runTest(topDownMergeSort);
+        //
+        // expect(result.output).to.deep.equal(result.expectOutput);
+        // console.log(result.runtime);
+        //
+        // let input = [];
+        // expect(topDownMergeSort(input)).to.deep.equal([]);
     })
 
     it('should return [] when input is []', () => {

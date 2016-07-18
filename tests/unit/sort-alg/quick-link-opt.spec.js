@@ -5,94 +5,93 @@ function ListNode(val){
     this.next = null;
 }
 
-function insertNode(head, node){
+function append(head, node){
     if(!head){
-        return node;
+        throw('List does not exsit, cannot append node to it!');
+        return;
     }
     if(!node){
         return head;
     }
-    var tail = head;
-    while(tail.next){
-        tail = tail.next;
-    }
-    tail.next = node;
-    return head;
-}
-
-
-function getTail(head){
-    while(head && head.next){
+    while(head.next){
         head = head.next;
     }
-    return head;
+    head.next = node;
+}
+
+function popHead(head){
+    let newHead = head.next;
+    head.next = null;
+
+    return newHead;
+}
+
+function removeNode(head, node){
+    let pre = null;
+
+    while(head){
+        if(head === node){
+            if(!pre){
+                popHead(head);
+            }
+            else {
+                pre.next = node.next;
+                node.next = null;
+            }
+        }
+    }
 }
 
 function partition(head, tail, parentPivot=null){
-    var pivot = tail;
-    var pre = null;
-    var cur = head;
 
-    while(cur!== pivot){
-        if(cur.val > pivot){
-            //if cur is in the middle
-            if(pre){
-                pre.next = cur.next;
-            }
-            //if cur is the first on
-            else {
-                //change head
-                head.val = cur.next.val;
-                head.next = cur.next.next;
-            }
-
-            //move cur after pivot
-            cur.next = parentPivot;
-        }
-        else{
-            if(!pre){
-                pre = head;
-            }
-            else{
-                pre = pre.next;
-            }
-            cur = cur.next;
-        }
-    }
-
-    return pivot;
 }
 
-function quickSort(head, tail){
-    if(!head || head === tail){
+function quickSort(head){
+    if(!head || !head.next)
         return head;
+
+    let pivot = head;
+    let newHead = popHead(head);
+
+    //use pivot as the head of right list
+    let cur = newHead;
+
+    while(cur){
+        if(cur.val > pivot.val){
+            //if cur is the head
+            if(cur === newHead){
+
+            }
+            //if cur is in the middle
+
+            //append cur into right list
+        }
     }
-debugger;
-    var pivot = partition(head, tail);
-    console.log(head);
-    console.log(pivot);
 
 }
+
+function sort(input){
+    let head = new ListNode(input[0]);
+    for(let i = 1; i < input.length; i++){
+        append(head, new ListNode(input[i]));
+    }
+
+    quickSort(head);
+
+    let i = 0;
+    while(head.next){
+        input[i++] = head.val;
+        head = head.next;
+    }
+}
+
 
 describe('optimize quick sort for linked list', () => {
-    var data = [10, 1, 3, 4];
-    var head;
-    data.forEach((d) => {
-        if(!head)
-            head = new ListNode(d);
-        else {
-            insertNode(head, new ListNode(d));
-        }
-    })
+    let result = runTest(sort);
 
-    var sortedLink = quickSort(head, getTail(head));
-    var result = [];
-    var ptr = sortedLink;
+    expect(result.output).to.deep.equal(result.expectOutput);
+    console.log(result.runtime);
 
-    while(ptr){
-
-        result.push(ptr.val);
-        ptr = ptr.next;
-    }
-    expect(result).to.deep.equal(data.sort((a, b) => {return a-b; }));
+    let input = [];
+    expect(sort(input)).to.deep.equal([]);
 })
