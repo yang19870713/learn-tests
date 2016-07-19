@@ -9,6 +9,7 @@ export function genData(length){
 
 export function runTest(sortFuc, dataLen = 10000){
     let input = genData(dataLen);
+    //console.log('INPUT:', input)
     let expectOutput = input.slice().sort((a,b) => {
         return a - b;
     })

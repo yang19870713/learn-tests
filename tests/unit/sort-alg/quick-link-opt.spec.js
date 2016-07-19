@@ -1,3 +1,4 @@
+import {runTest} from './test-helper';
 const expect = chai.expect;
 
 function ListNode(val){
@@ -7,11 +8,10 @@ function ListNode(val){
 
 function append(head, node){
     if(!head){
-        throw('List does not exsit, cannot append node to it!');
         return;
     }
     if(!node){
-        return head;
+        return;
     }
     while(head.next){
         head = head.next;
@@ -27,67 +27,108 @@ function popHead(head){
 }
 
 function removeNode(head, node){
+    if(!head || !node)
+        return;
+
     let pre = null;
 
     while(head){
         if(head === node){
             if(!pre){
-                popHead(head);
+                throw('node is the head, should call popHead')
             }
             else {
+                head = head.next;
                 pre.next = node.next;
                 node.next = null;
             }
+            break;
         }
+        else {
+            if(pre){
+                pre = pre.next;
+            }
+            else {
+                pre = head;
+            }
+            head = head.next;
+        }
+
     }
-}
-
-function partition(head, tail, parentPivot=null){
-
 }
 
 function quickSort(head){
     if(!head || !head.next)
         return head;
 
+    //debugger;
+
     let pivot = head;
-    let newHead = popHead(head);
+    head = popHead(head);
 
     //use pivot as the head of right list
-    let cur = newHead;
+    let cur = head;
 
     while(cur){
         if(cur.val > pivot.val){
             //if cur is the head
-            if(cur === newHead){
-
+            if(cur === head){
+                head = popHead(head);
+                append(pivot, cur);
+                cur = head;
             }
-            //if cur is in the middle
-
-            //append cur into right list
+            else{
+                let temp = cur.next;
+                removeNode(head, cur);
+                append(pivot, cur);
+                cur = temp;
+            }
+        }
+        else {
+            cur = cur.next;
         }
     }
 
+    //debugger;
+    let right = popHead(pivot);
+    if(head){
+        head = quickSort(head);
+        append(head, pivot);
+        append(head, quickSort(right));
+        //console.log(head);
+        return head;
+    }
+    else{
+        append(pivot, quickSort(right));
+        //console.log(pivot);
+        return pivot;
+    }
 }
 
 function sort(input){
+    if(input.length <= 1){
+        return input;
+    }
+
     let head = new ListNode(input[0]);
     for(let i = 1; i < input.length; i++){
         append(head, new ListNode(input[i]));
     }
 
-    quickSort(head);
+    head = quickSort(head);
+    //debugger;
 
     let i = 0;
-    while(head.next){
+    while(head){
         input[i++] = head.val;
         head = head.next;
     }
+    return input;
 }
 
 
 describe('optimize quick sort for linked list', () => {
-    let result = runTest(sort);
+    let result = runTest(sort, 10000);
 
     expect(result.output).to.deep.equal(result.expectOutput);
     console.log(result.runtime);
