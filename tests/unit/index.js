@@ -8,3 +8,5 @@ import './sort-alg/quick-link-opt.spec';
 import './sort-alg/select.spec';
 import './sort-alg/insert.spec';
 import './sort-alg/shell.spec';
+
+import './utils/deep-equal.spec';
