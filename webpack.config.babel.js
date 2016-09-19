@@ -63,7 +63,7 @@ switch (TARGET) {
                 contentBase: path.resolve(__dirname, "tests")
             },
             entry: {
-                bundle: "mocha!./tests/unit/index"
+                bundle:["babel-polyfill", "mocha!./tests/unit/index"]
             },
             output: {
                 path: path.resolve(__dirname, "tests/unit"),
