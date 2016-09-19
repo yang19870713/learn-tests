@@ -30,7 +30,6 @@ describe('Generator', () => {
                 yield 1;
             }
             catch (err) {
-                debugger
                 console.log( err );
             }
 
@@ -44,15 +43,13 @@ describe('Generator', () => {
         it.next();                // { value: 1, done: false }
 
         try {
-            debugger
             it.throw( "Hi!" );  // Hi!
-            debugger                    // { value: 2, done: false }
+                   // { value: 2, done: false }
             it.next();
-            debugger
+
             console.log( "never gets here" );
         }
         catch (err) {
-            debugger
             console.log( err ); // Hello!
         }
 
