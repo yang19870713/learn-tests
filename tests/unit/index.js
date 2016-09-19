@@ -9,6 +9,9 @@ import './sort-alg/select.spec';
 import './sort-alg/insert.spec';
 import './sort-alg/shell.spec';
 
+
 import './es6/generator.spec';
 
 import './alg/hash-table.spec';
+
+import './utils/deep-equal.spec';
