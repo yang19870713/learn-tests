@@ -15,3 +15,5 @@ import './es6/generator.spec';
 import './alg/hash-table.spec';
 
 import './utils/deep-equal.spec';
+
+import './stl/linked-list.spec';

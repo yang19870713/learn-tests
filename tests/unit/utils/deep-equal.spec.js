@@ -24,7 +24,6 @@ const expect = chai.expect;
 
 describe('isDeepEqual', () => {
     it('shoud deeply compare two values/objects', () => {
-        debugger
-        _.isArray([])
+        //
     })
 })
